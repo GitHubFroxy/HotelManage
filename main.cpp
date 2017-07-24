@@ -23,10 +23,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     //myHelper::SetGBK2312Code();
-    QTextCodec *codec = QTextCodec::codecForName("System");
-    QTextCodec::setCodecForLocale(codec);
-    QTextCodec::setCodecForCStrings(codec);
-    QTextCodec::setCodecForTr(codec);
+//    QTextCodec *codec = QTextCodec::codecForName("System");
+//    QTextCodec::setCodecForLocale(codec);
+//    QTextCodec::setCodecForCStrings(codec);
+//    QTextCodec::setCodecForTr(codec);
 
     myHelper::SetStyle("blue");//蓝色风格
 
@@ -38,11 +38,11 @@ int main(int argc, char *argv[])
     LoginDialog login;
 
 
-    if(!createConnection())
-    {
-        myHelper::ShowMessageBoxError(QObject::tr("数据库打开失败，程序将自动关闭"));
-        return 1;
-    }
+//    if(!createConnection())
+//    {
+//        myHelper::ShowMessageBoxError(QObject::tr("数据库打开失败，程序将自动关闭"));
+//        return 1;
+//    }
 
     login.show();
 

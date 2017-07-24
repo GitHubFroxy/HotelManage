@@ -166,6 +166,7 @@ void LoginDialog::on_btnLogin_clicked()
             query.next();
             QString customePwd = query.value(0).toString();
             if(customePwd == UserPwd)
+//                if(customePwd == customePwd)
             {
                 Myapp::LastLoginter = ui->txtUserName->text();
                 Myapp::CurrentUserName = Myapp::LastLoginter;
