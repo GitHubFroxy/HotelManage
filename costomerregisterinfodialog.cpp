@@ -5,7 +5,7 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include "app/myhelper.h"
-
+#include <QSqlError>
 CostomerRegisterInfoDialog::CostomerRegisterInfoDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CostomerRegisterInfoDialog)
@@ -21,14 +21,14 @@ CostomerRegisterInfoDialog::~CostomerRegisterInfoDialog()
 
 void CostomerRegisterInfoDialog::InitForm()
 {
-    ColumnNames[0] = tr("客户编号");
-    ColumnNames[1] = tr("姓名");
-    ColumnNames[2] = tr("性别");
-    ColumnNames[3] = tr("密码");
-    ColumnNames[4] = tr("电话");
-    ColumnNames[5] = tr("地址");
-    ColumnNames[6] = tr("注册时间");
-    ColumnNames[7] = tr("备注");
+    ColumnNames[0] = QString::fromLocal8Bit("客户编号");
+    ColumnNames[1] = QString::fromLocal8Bit("姓名");
+    ColumnNames[2] = QString::fromLocal8Bit("性别");
+    ColumnNames[3] = QString::fromLocal8Bit("密码");
+    ColumnNames[4] = QString::fromLocal8Bit("电话");
+    ColumnNames[5] = QString::fromLocal8Bit("地址");
+    ColumnNames[6] = QString::fromLocal8Bit("注册时间");
+    ColumnNames[7] = QString::fromLocal8Bit("备注");
 
     ColumnWidths[0] = 70;
     ColumnWidths[1] = 100;
@@ -143,12 +143,12 @@ void CostomerRegisterInfoDialog::on_checkBoxPwd_clicked(bool checked)
     if(checked)
     {
         ui->CustomerRePwd->setEchoMode(QLineEdit::Normal);
-        ui->checkBoxPwd->setText(tr("隐藏"));
+        ui->checkBoxPwd->setText(QString::fromLocal8Bit("隐藏"));
     }
     else
     {
         ui->CustomerRePwd->setEchoMode(QLineEdit::Password);
-        ui->checkBoxPwd->setText(tr("显示"));
+        ui->checkBoxPwd->setText(QString::fromLocal8Bit("显示"));
     }
 }
 
@@ -202,28 +202,36 @@ void CostomerRegisterInfoDialog::on_pbnSave_clicked()
 
     if(customerNo.isEmpty() && customerName.isEmpty()&& customerPwd.isEmpty()&&customerPhone.isEmpty())
     {
-        myHelper::ShowMessageBoxInfo(tr("必须填满带 * 的内容!"));
+        myHelper::ShowMessageBoxInfo( QString::fromLocal8Bit("必须填满带 * 的内容!"));
     }
     else
     {
         QSqlQuery query;
-        bool ok = query.prepare("INSERT INTO Customer (Id, CustomerName,CustomerSex,CustomerPassword,"
-                                "CustomerPhone,CustomerAddress,CustomerData,CustomerRemark)"
-                                "VALUES (:Id,:CustomerName,:CustomerSex,:CustomerPassword,:CustomerPhone,:CustomerAddress,:CustomerData,:CustomerRemark)");
+
+        bool ok = query.prepare("INSERT INTO customer(Id, CustomerName,CustomerSex,CustomerPassword,CustomerPhone,CustomerDate,CustomerAddress,CustomerRemark)"
+                                "VALUES (:Id,:CustomerName,:CustomerSex,:CustomerPassword,:CustomerPhone,:CustomerDate,:CustomerAddress,:CustomerRemark)");
         query.bindValue(":Id",customerNo);
         query.bindValue(":CustomerName",customerName);
         query.bindValue(":CustomerSex",customerSex);
         query.bindValue(":CustomerPassword",customerPwd);
         query.bindValue(":CustomerPhone",customerPhone);
+        query.bindValue(":CustomerDate",customeDate);
         query.bindValue(":CustomerAddress",customerAddress);
-        query.bindValue(":CustomerData",customeDate);
         query.bindValue(":CustomerRemark",customeRemark);
+
         query.setForwardOnly(true);
         query.exec();
 
         if(ok)
         {
-            myHelper::ShowMessageBoxInfo(tr("注册成功!"));
+            myHelper::ShowMessageBoxInfo( QString::fromLocal8Bit("注册成功!"));
+        }
+        else
+        {
+
+            qCritical("Can't open database: %s(%s)",
+                      query.lastError().text().toLocal8Bit().data(),
+                      qt_error_string().toLocal8Bit().data());
         }
         RefreshInfo();
 
