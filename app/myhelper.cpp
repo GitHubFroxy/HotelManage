@@ -179,7 +179,7 @@ void myHelper::MyLoginBlog(QString tablename, QString Trigger, QString BlogConte
     QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
     qDebug() <<currentDateTime;
 
-    QString sql = "insert into "+tablename+" values(:TriggerTimer,:Trigger,:TriggretContent,:TriggetUser)";
+    QString sql = "insert into "+tablename+" values(:TriggerTimer,:Trigger,:TriggerContent,:TriggerUser)";
     qDebug() <<sql;
     query.prepare(sql);
     query.bindValue(":TriggerTimer",currentDateTime);

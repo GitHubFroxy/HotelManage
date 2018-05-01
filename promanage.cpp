@@ -26,11 +26,11 @@ void ProManage::initForm()
 
     QueryModel = new QSqlQueryModel(this);
     //初始化表格列名和列宽
-    ColumnNames[0] = tr("房间编号");
-    ColumnNames[1] = tr("房间类型");
-    ColumnNames[2] = tr("房间价格");
-    ColumnNames[3] = tr("房间状态");
-    ColumnNames[4] = tr("备注");
+    ColumnNames[0] = QString::fromLocal8Bit("房间编号");
+    ColumnNames[1] = QString::fromLocal8Bit("房间类型");
+    ColumnNames[2] = QString::fromLocal8Bit("房间价格");
+    ColumnNames[3] = QString::fromLocal8Bit("房间状态");
+    ColumnNames[4] = QString::fromLocal8Bit("备注");
 
     ColumnWidths[0] = 80;
     ColumnWidths[1] = 120;
@@ -44,6 +44,9 @@ void ProManage::initForm()
     BindHotelInfo("Room",ui->tableView,ColumnNames,ColumnWidths);
 
     this->connect(ui->tableView,SIGNAL(clicked(QModelIndex)),SLOT(showCurrentRoomNo()));
+    roomstate = "";
+    roomtypename = "";
+    roomlayer = "";
 }
 
 /*
@@ -82,6 +85,7 @@ void ProManage::BindHotelInfo(QString tableName, QTableView *tableView, QString 
     TableView = tableView;
     QString sql = "SELECT RoomNo,Typename,TypePrice,RoomState,RoomRemark FROM " + tableName+
             ",RoomType where room.RoomTypeId=roomtype.RoomTypeId;";
+
     QueryModel->setQuery(sql);
     TableView->setModel(QueryModel);
 
@@ -156,13 +160,24 @@ void ProManage::showCurrentRoomNo()
 */
 void ProManage::on_comboBoxRoomType_activated(const QString &arg1)
 {
-    qDebug() <<"显示"<<arg1<<"信息";
+    qDebug() <<QString::fromLocal8Bit("显示")<<arg1<<QString::fromLocal8Bit("信息");
     QString sql = "and Typename='"+arg1+"'";
-    if(arg1 == "所有房型")
+    if(arg1 == QString::fromLocal8Bit("所有房型"))
     {
         sql = "";
     }
+    roomtypename = sql;
 
+    if(ui->checkBox->isChecked() == true)
+    {
+
+        sql += roomstate;
+    }
+    if(ui->checkBox_2->isChecked() == true)
+    {
+
+        sql += roomlayer;
+    }
     BindDataSelect("Room",ui->tableView,"RoomNo","asc",sql,ColumnNames,ColumnWidths);
 }
 
@@ -171,49 +186,61 @@ void ProManage::on_comboBoxRoomType_activated(const QString &arg1)
 */
 void ProManage::on_comboBoxRoomfloor_activated(const QString &arg1)
 {
-    qDebug() <<"显示"<<arg1<<"房间信息";
-    //QString sql = "and RoomNo='"+arg1+"'";
+    qDebug() <<QString::fromLocal8Bit("显示")<<arg1<<QString::fromLocal8Bit("房间信息");
     QString sql = " ";
-    if(arg1 == "1层")
+    if(arg1 == QString::fromLocal8Bit("1层"))
     {
         sql+= " and RoomNo like '1__'";
     }
-    else if(arg1 == "2层")
+    else if(arg1 == QString::fromLocal8Bit("2层"))
     {
         sql+=" and RoomNo like '2__'";
     }
-    else if(arg1 == "3层")
+    else if(arg1 == QString::fromLocal8Bit("3层"))
     {
         sql+=" and RoomNo like '3__'";
     }
-    else if(arg1 == "4层")
+    else if(arg1 == QString::fromLocal8Bit("4层"))
     {
         sql+=" and RoomNo like '4__'";
     }
-    else if(arg1 == "5层")
+    else if(arg1 == QString::fromLocal8Bit("5层"))
     {
         sql+=" and RoomNo like '5__'";
     }
-    else if(arg1 == "6层")
+    else if(arg1 == QString::fromLocal8Bit("6层"))
     {
         sql+=" and RoomNo like '6__'";
     }
-    else if(arg1 == "7层")
+    else if(arg1 == QString::fromLocal8Bit("7层"))
     {
         sql+=" and RoomNo like '7__'";
     }
-    else if(arg1 == "8层")
+    else if(arg1 == QString::fromLocal8Bit("8层"))
     {
         sql+=" and RoomNo like '8__'";
     }
-    else if(arg1 == "9层")
+    else if(arg1 == QString::fromLocal8Bit("9层"))
     {
         sql+=" and RoomNo like '9__'";
     }
-    else if(arg1 == "10层")
+    else if(arg1 == QString::fromLocal8Bit("10层"))
     {
         sql+=" and RoomNo like '1___'";
     }
+    roomlayer = sql;
+
+    if(ui->checkBox->isChecked() == true)
+    {
+
+        sql += roomstate;
+    }
+    if(ui->checkBox_3->isChecked() == true)
+    {
+
+        sql += roomtypename;
+    }
+
     BindDataSelect("Room",ui->tableView,"RoomNo","asc",sql,ColumnNames,ColumnWidths);
 }
 
@@ -222,28 +249,49 @@ void ProManage::on_comboBoxRoomfloor_activated(const QString &arg1)
 */
 void ProManage::on_comboBoxRoomStatus_activated(const QString &arg1)
 {
-    qDebug() <<"显示"<<arg1<<"房间信息";
-    //QString sql = "and RoomState='"+sql+"'";
+    qDebug() <<QString::fromLocal8Bit("显示")<<arg1<<QString::fromLocal8Bit("房间信息");
     QString sql = " ";
-    if(arg1 == "不限房态")
+    if(arg1 == QString::fromLocal8Bit("不限房态"))
     {
         sql +="";
     }
-    else if(arg1 == "限空房")
+    else if(arg1 == QString::fromLocal8Bit("限空房"))
     {
-        sql +=" and RoomState = '空'";
+        sql +=" and RoomState = '";
+        sql +=QString::fromLocal8Bit("空");//由于字符编码问题 只能分开写
+        sql +="'";
     }
-    else if(arg1 == "限住客房")
+    else if(arg1 == QString::fromLocal8Bit("限住客房"))
     {
-        sql +=" and RoomState = '满'";
+//        sql +=" and RoomState = '满'";
+        sql +=" and RoomState = '";
+        sql +=QString::fromLocal8Bit("满");//由于字符编码问题 只能分开写
+        sql +="'";
     }
-    else if(arg1 == "限保留房")
+    else if(arg1 == QString::fromLocal8Bit("限保留房"))
     {
-        sql +=" and RoomState = '保留'";
+//        sql +=" and RoomState = '保留'";
+        sql +=" and RoomState = '";
+        sql +=QString::fromLocal8Bit("保留");//由于字符编码问题 只能分开写
+        sql +="'";
     }
-    else if(arg1 == "限维修房")
+    else if(arg1 == QString::fromLocal8Bit("限维修房"))
     {
-        sql +=" and RoomState = '维修'";
+//        sql +=" and RoomState = '维修'";
+        sql +=" and RoomState = '";
+        sql +=QString::fromLocal8Bit("维修");//由于字符编码问题 只能分开写
+        sql +="'";
+    }
+    roomstate = sql;
+    if(ui->checkBox_2->isChecked() == true)
+    {
+
+        sql += roomlayer;
+    }
+    if(ui->checkBox_3->isChecked() == true)
+    {
+
+        sql += roomtypename;
     }
     BindDataSelect("Room",ui->tableView,"RoomNo","asc",sql,ColumnNames,ColumnWidths);
 }

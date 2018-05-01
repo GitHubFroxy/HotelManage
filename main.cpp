@@ -18,16 +18,12 @@
 #include "app/myapp.h"
 
 #include <QSqlQuery>
-
+#include <qtextcodec.h>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     //myHelper::SetGBK2312Code();
-//    QTextCodec *codec = QTextCodec::codecForName("System");
-//    QTextCodec::setCodecForLocale(codec);
-//    QTextCodec::setCodecForCStrings(codec);
-//    QTextCodec::setCodecForTr(codec);
-
+    myHelper::SetUTF8Code();
     myHelper::SetStyle("blue");//蓝色风格
 
     QTranslator translator;             //加载中文字符
@@ -38,14 +34,18 @@ int main(int argc, char *argv[])
     LoginDialog login;
 
 
-//    if(!createConnection())
-//    {
-//        myHelper::ShowMessageBoxError(QObject::tr("数据库打开失败，程序将自动关闭"));
-//        return 1;
-//    }
+    if(!createConnection())
+    {
+        QTextCodec *codec = QTextCodec::codecForName("GBK");//修改这两行
+        //解决现实乱码问题
+        //myHelper::ShowMessageBoxError(QObject::tr("数据库打开失败，程序将自动关闭"));
+        //myHelper::ShowMessageBoxError((QString::fromLocal8Bit("数据库打开失败，程序将自动关闭")));
+        myHelper::ShowMessageBoxError(codec->toUnicode("数据库打开失败，程序将自动关闭"));
+        return 1;
+    }
 
     login.show();
 
-    //closeConnection();
+//    closeConnection();
     return a.exec();
 }

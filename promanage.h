@@ -53,6 +53,10 @@ private:
     int ColumnWidths[5];            //列宽数组声明
     //Mythread mythread;
     QTimer *timer;
+    QString roomstate;
+    QString roomtypename;
+    QString roomlayer;
+
 };
 
 #endif // PROMANAGE_H

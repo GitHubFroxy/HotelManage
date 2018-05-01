@@ -62,14 +62,14 @@ void Widget::on_btnMenu_Max_clicked()
     {
         this->setGeometry(location);
         IconHelper::Instance()->SetIcon(ui->btnMenu_Max, QChar(0xf096), 10);
-        ui->btnMenu_Max->setToolTip("最大化");
+        ui->btnMenu_Max->setToolTip(QString::fromLocal8Bit("最大化"));
     }
     else
     {
         location = this->geometry();
         this->setGeometry(qApp->desktop()->availableGeometry());
         IconHelper::Instance()->SetIcon(ui->btnMenu_Max, QChar(0xf079), 10);
-        ui->btnMenu_Max->setToolTip("还原");
+        ui->btnMenu_Max->setToolTip(QString::fromLocal8Bit(("还原")));
     }
     max = !max;
 }
@@ -126,9 +126,9 @@ void Widget::InitStyle()
     ui->stackedWidget->addWidget(backdatabase);
     ui->stackedWidget->addWidget(checkoutRoom);
 
-    ui->label_CompanyName->setText(tr("太原工业学院--计算机工程系"));
-    ui->label_CurrentUser->setText(QString(tr("当前用户:%1【%2】")).arg(Myapp::CurrentUserName).arg("管理员"));
-    ui->label_SoftTime->setText(QString(tr("已运行:0天0时0分0秒")));
+    ui->label_CompanyName->setText(QString::fromLocal8Bit("太原工业学院--计算机工程系"));
+    ui->label_CurrentUser->setText(QString(QString::fromLocal8Bit("当前用户:%1【%2】")).arg(Myapp::CurrentUserName).arg(QString::fromLocal8Bit("管理员")));
+    ui->label_SoftTime->setText(QString(QString::fromLocal8Bit("已运行:0天0时0分0秒")));
 }
 
 void Widget::on_pbnAsk_clicked()
@@ -177,8 +177,8 @@ void Widget::showCurrentTime()
         day++;
         hour = 0;
     }
-    ui->label_CurrentTime->setText(QDateTime::currentDateTime().toString(tr("当前时间:yyyy年MM月dd日 dddd HH:mm:ss")));
-    ui->label_SoftTime->setText(QString(tr("已运行:%1天%2时%3分%4秒")).arg(day).arg(hour).arg(minute).arg(second));
+    ui->label_CurrentTime->setText(QDateTime::currentDateTime().toString(QString::fromLocal8Bit("当前时间:yyyy年MM月dd日 dddd HH:mm:ss")));
+    ui->label_SoftTime->setText(QString(QString::fromLocal8Bit("已运行:%1天%2时%3分%4秒")).arg(day).arg(hour).arg(minute).arg(second));
 }
 
 /*

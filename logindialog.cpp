@@ -37,13 +37,13 @@ void LoginDialog::InitForm()
     IconHelper::Instance()->SetIcon(ui->btnMenu_Min, QChar(0xf068), 10);
     IconHelper::Instance()->SetIcon(ui->btnMenu, QChar(0xf0c9), 10);
     IconHelper::Instance()->SetIcon(ui->lab_Ico, QChar(0xf015), 12);
-    ui->labCompany->setText(tr("技术支持：XXX"));
+    ui->labCompany->setText(QString::fromLocal8Bit("技术支持：XXX"));
     //ui->radioButtonAdmin->setCheckable(true);
 
-    ui->btnLogin->setToolTip(tr("登录"));
-    ui->btnresgister->setToolTip(tr("注册"));
-    ui->radioButtonAdmin->setToolTip(tr("管理员"));
-    ui->radioButtonCustomer->setToolTip(tr("客户"));
+    ui->btnLogin->setToolTip(QString::fromLocal8Bit("登录"));
+    ui->btnresgister->setToolTip(QString::fromLocal8Bit("注册"));
+    ui->radioButtonAdmin->setToolTip(QString::fromLocal8Bit("管理员"));
+    ui->radioButtonCustomer->setToolTip(QString::fromLocal8Bit("客户"));
 }
 
 /*
@@ -117,7 +117,7 @@ void LoginDialog::on_btnLogin_clicked()
     {
         if(UserPwd.isEmpty()&&UserName.isEmpty())
         {
-            myHelper::ShowMessageBoxError(tr("用户名或密码不能为空,请重新输入!"));
+            myHelper::ShowMessageBoxError(QString::fromLocal8Bit("用户名或密码不能为空,请重新输入!"));
         }
         else
         {
@@ -132,10 +132,10 @@ void LoginDialog::on_btnLogin_clicked()
                 Myapp::LastLoginter = ui->txtUserName->text();
                 Myapp::CurrentUserName = Myapp::LastLoginter;
                 Myapp::CurrentUserPwd = ui->txtUserPwd->text();
-                Myapp::CurrentUserType = tr("管理员");
+                Myapp::CurrentUserType = QString::fromLocal8Bit("管理员");
                 Myapp::WriteConfig();           //写进配置文件
 
-                myHelper::MyLoginBlog("logblog","登录","登录系统","管理员");     //写入系统日志
+                myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("登录"),QString::fromLocal8Bit("登录系统"),QString::fromLocal8Bit("管理员"));     //写入系统日志
                 qDebug() <<UserName<<""<<UserPwd;
                 //accept();
                 mainwidget = new Widget;
@@ -144,7 +144,7 @@ void LoginDialog::on_btnLogin_clicked()
             }
             else
             {
-                myHelper::ShowMessageBoxError(tr("密码错误，请重新输入!"));
+                myHelper::ShowMessageBoxError(QString::fromLocal8Bit("密码错误，请重新输入!"));
                 ui->txtUserPwd->clear();
                 ui->txtUserPwd->setFocus();
             }
@@ -155,7 +155,7 @@ void LoginDialog::on_btnLogin_clicked()
         //顾客登录
         if(UserPwd.isEmpty()&&UserName.isEmpty())
         {
-            myHelper::ShowMessageBoxError(tr("用户名或密码不能为空,请重新输入!"));
+            myHelper::ShowMessageBoxError(QString::fromLocal8Bit("用户名或密码不能为空,请重新输入!"));
         }
         else
         {
@@ -166,27 +166,26 @@ void LoginDialog::on_btnLogin_clicked()
             query.next();
             QString customePwd = query.value(0).toString();
             if(customePwd == UserPwd)
-//                if(customePwd == customePwd)
             {
                 Myapp::LastLoginter = ui->txtUserName->text();
                 Myapp::CurrentUserName = Myapp::LastLoginter;
                 Myapp::CurrentUserPwd = ui->txtUserPwd->text();
-                Myapp::CurrentUserType = tr("一般用户");
+                Myapp::CurrentUserType = QString::fromLocal8Bit("一般用户");
                 Myapp::WriteConfig();           //写进配置文件
-                myHelper::MyLoginBlog("logblog","登录系统","顾客",ui->txtUserName->text());     //写入系统日志
+                myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("登录系统"),QString::fromLocal8Bit("顾客"),ui->txtUserName->text());     //写入系统日志
                 customewidget->show();
                 this->close();
             }
             else
             {
                 total++;
-                myHelper::ShowMessageBoxError(tr("密码错误，请重新输入!"));
+                myHelper::ShowMessageBoxError(QString::fromLocal8Bit("密码错误，请重新输入!"));
                 ui->txtUserPwd->clear();
                 ui->txtUserPwd->setFocus();
 
                 if(total == 3)
                 {
-                    myHelper::ShowMessageBoxError(tr("系统检测您已连续三次输错密码，若忘记密码请联系管理员！"));
+                    myHelper::ShowMessageBoxError(QString::fromLocal8Bit("系统检测您已连续三次输错密码，若忘记密码请联系管理员！"));
                     qApp->quit();
                 }
             }
@@ -195,7 +194,7 @@ void LoginDialog::on_btnLogin_clicked()
     }
     else
     {
-        myHelper::ShowMessageBoxError(tr("请选择登录身份后在登录!"));
+        myHelper::ShowMessageBoxError(QString::fromLocal8Bit("请选择登录身份后在登录!"));
     }
 
 }
@@ -258,8 +257,8 @@ void LoginDialog::on_btnresgister_clicked()
 
 void LoginDialog::on_radioButtonCustomer_clicked()
 {
-    ui->txtUserName->setText("张超");
-    ui->txtUserPwd->setText("123456");
+    ui->txtUserName->setText(QString::fromLocal8Bit("customer"));
+    ui->txtUserPwd->setText(QString::fromLocal8Bit("customer"));
 }
 
 void LoginDialog::on_radioButtonAdmin_clicked()
