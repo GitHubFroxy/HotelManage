@@ -23,9 +23,9 @@ ModiftRoomPrice::~ModiftRoomPrice()
 void ModiftRoomPrice::initForm()
 {
     //初始化表格列名和列宽
-    ColumnNames[0] = tr("房间类型编号");
-    ColumnNames[1] = tr("房间名称");
-    ColumnNames[2] = tr("房间价格");
+    ColumnNames[0] = QString::fromLocal8Bit("房间类型编号");
+    ColumnNames[1] = QString::fromLocal8Bit("房间名称");
+    ColumnNames[2] = QString::fromLocal8Bit("房间价格");
 
     ColumnWidths[0] = 100;
     ColumnWidths[1] = 120;
@@ -112,9 +112,9 @@ void ModiftRoomPrice::on_pbnSave_clicked()
     else
     {
         QSqlQuery query;
-        bool ok = query.prepare("INSERT INTO roomtype (Id, Typename,TypePrice)"
-                                "VALUES (:Id,:Typename,:TypePrice)");
-        query.bindValue(":Id",roomtypeNo);
+        bool ok = query.prepare("INSERT INTO roomtype (RoomTypeId, Typename,TypePrice)"
+                                "VALUES (:RoomTypeId,:Typename,:TypePrice)");
+        query.bindValue(":RoomTypeId",roomtypeNo);
         query.bindValue(":Typename",roomtypeName);
         query.bindValue(":TypePrice",roomtypePrice);
         query.setForwardOnly(true);

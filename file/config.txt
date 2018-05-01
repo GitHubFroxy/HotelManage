@@ -1,0 +1,4 @@
+[AppConfig]
+LastLoginer=customer
+CurrentUserPwd=customer
+CurrentUserType=\x4e00\x822c\x7528\x6237

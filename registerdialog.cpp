@@ -43,8 +43,8 @@ void RegisterDialog::InitControls()
     IconHelper::Instance()->SetIcon(ui->btnMenu_Close, QChar(0xf00d), 10);
     IconHelper::Instance()->SetIcon(ui->lab_Ico, QChar(0xf015), 12);
 
-    ui->btnCancel->setToolTip(tr("取消"));
-    ui->btnOk->setToolTip(tr("注册"));
+    ui->btnCancel->setToolTip(QString::fromLocal8Bit("取消"));
+    ui->btnOk->setToolTip(QString::fromLocal8Bit("注册"));
 
     //正则表达式，对输入的内容进行限制，电话号码11位
     QRegExp rxPhone("\\d{11}$");
@@ -122,23 +122,23 @@ void RegisterDialog::on_btnOk_clicked()
 
         QSqlQuery query;
         bool ok = query.prepare("INSERT INTO Customer (Id, CustomerName,CustomerSex,CustomerPassword,"
-                                "CustomerPhone,CustomerAddress,CustomerData,CustomerRemark)"
-                                "VALUES (:Id,:CustomerName,:CustomerSex,:CustomerPassword,:CustomerPhone,:CustomerAddress,:CustomerData,:CustomerRemark)");
+                                "CustomerPhone,CustomerAddress,CustomerDate,CustomerRemark)"
+                                "VALUES (:Id,:CustomerName,:CustomerSex,:CustomerPassword,:CustomerPhone,:CustomerAddress,:CustomerDate,:CustomerRemark)");
         query.bindValue(":Id",customerId);
         query.bindValue(":CustomerName",customerName);
         query.bindValue(":CustomerSex",customerSex);
         query.bindValue(":CustomerPassword",customerPwd);
         query.bindValue(":CustomerPhone",customerPhone);
         query.bindValue(":CustomerAddress",customerAddress);
-        query.bindValue(":CustomerData",CustomerData);
+        query.bindValue(":CustomerDate",CustomerData);
         query.bindValue(":CustomerRemark",customerRemark);
         query.setForwardOnly(true);
         query.exec();
 
         if(ok)
         {
-            myHelper::MyLoginBlog("logblog","注册","新用户注册",customerName);
-            myHelper::ShowMessageBoxInfo(tr("注册成功!"));
+            myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("注册"),QString::fromLocal8Bit("新用户注册"),customerName);
+            myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("注册成功!"));
         }
     }
 }

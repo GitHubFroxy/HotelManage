@@ -19,10 +19,10 @@ LogBlogDialog::~LogBlogDialog()
 void LogBlogDialog::InitForm()
 {
     //初始化表格列名和列宽
-    ColumnNames[0] = tr("时间");
-    ColumnNames[1] = tr("出发的动作");
-    ColumnNames[2] = tr("内容");
-    ColumnNames[3] = tr("操作员名字");
+    ColumnNames[0] = QString::fromLocal8Bit("时间");
+    ColumnNames[1] = QString::fromLocal8Bit("出发的动作");
+    ColumnNames[2] = QString::fromLocal8Bit("内容");
+    ColumnNames[3] = QString::fromLocal8Bit("操作员名字");
 
     ColumnWidths[0] = 220;
     ColumnWidths[1] = 120;
@@ -52,7 +52,8 @@ void LogBlogDialog::MyBindTable(QString tableName, QString where,QTableView *tab
 {
     QueryModel = new QSqlQueryModel(this);
     TableView = tableView;
-    QString sql = "SELECT * FROM " + tableName+where;
+    QString sql = "SELECT * FROM " + tableName+where+";";
+    qDebug() <<sql;
     QueryModel->setQuery(sql);
     TableView->setModel(QueryModel);
 
@@ -76,27 +77,25 @@ void LogBlogDialog::MyBindTable(QString tableName, QString where,QTableView *tab
 void LogBlogDialog::on_btnSelect_clicked()
 {
     QString sql = " where 1 = 1";
-
     if(ui->ckUserName->isChecked())
     {
         sql+=" and TriggerUser='"+ui->cboxUserName->currentText()+"'";
     }
     if(ui->ckTriggerType->isChecked())
     {
-        sql+=" and Trigger ='"+ui->cboxTriggerType->currentText();
+        sql+=" and TriggerUser ='"+ui->cboxTriggerType->currentText()+"'";
     }
     if(ui->ckTriggerTime->isChecked())
     {
         if (ui->dateStart->date() > ui->dateEnd->date())
         {
-            myHelper::ShowMessageBoxError(tr("开始时间不能大于结束时间!"));
+            myHelper::ShowMessageBoxError(QString::fromLocal8Bit("开始时间不能大于结束时间!"));
             return;
         }
-        sql+=" and date(TriggerTimer) >='"+ui->dateStart->date().toString("yyyy-MM-dd")+"'";
+        sql+=" and date(TriggerTimer) >='"+ui->dateStart->date().toString("yyyy-MM-dd")+"'";//TODO 日期如何比较
         sql+=" and date(TriggerTimer) <='"+ui->dateEnd->date().toString("yyyy-MM-dd")+"'";
     }
-
-    this->MyBindTable("logblog",sql,ui->tableView,ColumnNames,ColumnWidths);
+    MyBindTable("logblog",sql,ui->tableView,ColumnNames,ColumnWidths);
 }
 
 
@@ -130,9 +129,9 @@ void LogBlogDialog::on_ckUserName_clicked(bool checked)
 
 void LogBlogDialog::on_btnDelete_clicked()
 {
-    if(Myapp::CurrentUserName != "管理员")
+    if(Myapp::CurrentUserName != QString::fromLocal8Bit("admin"))
     {
-        myHelper::ShowMessageBoxError(tr("你没有权限删除记录"));
+        myHelper::ShowMessageBoxError(QString::fromLocal8Bit("你没有权限删除记录"));
         return;
     }
 }

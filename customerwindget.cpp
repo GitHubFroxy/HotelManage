@@ -42,10 +42,10 @@ void CustomerWindget::InitForm()
     IconHelper::Instance()->SetIcon(ui->lab_Ico, QChar(0xf015), 12);
 
     //初始化表格列名和列宽
-    ColumnNames[0] = tr("房间编号");
-    ColumnNames[1] = tr("房间类型");
-    ColumnNames[2] = tr("房间价格");
-    ColumnNames[3] = tr("房间状态");
+    ColumnNames[0] = QString::fromLocal8Bit("房间编号");
+    ColumnNames[1] = QString::fromLocal8Bit("房间类型");
+    ColumnNames[2] = QString::fromLocal8Bit("房间价格");
+    ColumnNames[3] = QString::fromLocal8Bit("房间状态");
 
     ColumnWidths[0] = 80;
     ColumnWidths[1] = 120;
@@ -53,14 +53,14 @@ void CustomerWindget::InitForm()
     ColumnWidths[3] = 120;
 
     //顾客信息显示字段初始化
-    CustomeColumnNames[0] = "编号";
-    CustomeColumnNames[1] = "姓名";
-    CustomeColumnNames[2] = "性别";
-    CustomeColumnNames[3] = "密码";
-    CustomeColumnNames[4] = "电话";
-    CustomeColumnNames[5] = "地址";
-    CustomeColumnNames[6] = "注册日期";
-    CustomeColumnNames[7] = "备注";
+    CustomeColumnNames[0] = QString::fromLocal8Bit("编号");
+    CustomeColumnNames[1] = QString::fromLocal8Bit("姓名");
+    CustomeColumnNames[2] = QString::fromLocal8Bit("性别");
+    CustomeColumnNames[3] = QString::fromLocal8Bit("密码");
+    CustomeColumnNames[4] = QString::fromLocal8Bit("电话");
+    CustomeColumnNames[5] = QString::fromLocal8Bit("地址");
+    CustomeColumnNames[6] = QString::fromLocal8Bit("注册日期");
+    CustomeColumnNames[7] = QString::fromLocal8Bit("备注");
 
 
     CustomeColumnWidths[0] = 50;
@@ -94,7 +94,9 @@ void CustomerWindget::BindRoomInfo(QString tableName, QTableView *tableView, QSt
     QueryModel = new QSqlQueryModel(this);
     TableView = tableView;
     QString sql = "SELECT RoomNo,Typename,TypePrice,RoomState FROM " + tableName+
-            ",RoomType where room.RoomTypeId = roomtype.RoomTypeId and Roomstate ='空';";
+            ",RoomType where room.RoomTypeId = roomtype.RoomTypeId and Roomstate = '";
+    sql += QString::fromLocal8Bit("空");
+    sql += "';";
     QueryModel->setQuery(sql);
     TableView->setModel(QueryModel);
 
@@ -121,7 +123,7 @@ void CustomerWindget::BindCustomeInfo(QString tableName, QTableView *tableView, 
 
     //QString customename = GetCutrrentUserName("Customelogblog");
     QString customename = Myapp::CurrentUserName;
-    qDebug() <<"当前用户名:"<<customename;
+    qDebug() <<QString::fromLocal8Bit("当前用户名:")<<customename;
     QString sql = "SELECT * FROM " + tableName+
             " where CustomerName ='"+customename+"';";
     qDebug() <<sql;
@@ -191,14 +193,14 @@ void CustomerWindget::on_btnMenu_Max_clicked()
     {
         this->setGeometry(location);
         IconHelper::Instance()->SetIcon(ui->btnMenu_Max, QChar(0xf096), 10);
-        ui->btnMenu_Max->setToolTip("最大化");
+        ui->btnMenu_Max->setToolTip(QString::fromLocal8Bit("最大化"));
     }
     else
     {
         location = this->geometry();
         this->setGeometry(qApp->desktop()->availableGeometry());
         IconHelper::Instance()->SetIcon(ui->btnMenu_Max, QChar(0xf079), 10);
-        ui->btnMenu_Max->setToolTip("还原");
+        ui->btnMenu_Max->setToolTip(QString::fromLocal8Bit("还原"));
     }
     max = !max;
 }
@@ -249,7 +251,7 @@ void CustomerWindget::on_pbnROK_clicked()
         //到店支付
         if(roomId.isEmpty()||roomPrice.isEmpty())
         {
-            myHelper::ShowMessageBoxError(tr("必须填满带*的字段"));
+            myHelper::ShowMessageBoxError(QString::fromLocal8Bit("必须填满带*的字段"));
         }
         else
         {
@@ -288,8 +290,8 @@ void CustomerWindget::on_pbnROK_clicked()
 
             if(ok)
             {
-                myHelper::ShowMessageBoxInfo(QString("预订成功!订单号:"+serialNumber));
-                qDebug() <<"顾客预订成功!";
+                myHelper::ShowMessageBoxInfo(QString(QString::fromLocal8Bit("预订成功!订单号:")+serialNumber));
+                qDebug() <<QString::fromLocal8Bit("顾客预订成功!");
             }
         }
 
@@ -301,26 +303,26 @@ void CustomerWindget::on_pbnROK_clicked()
     else
     {
         //其他
-        myHelper::ShowMessageBoxInfo(tr("请选择支付方式"));
+        myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("请选择支付方式"));
     }
 
 }
 
 void CustomerWindget::on_comboBoxRoomType_activated(const QString &arg1)
 {
-    if(arg1 == "单人间")
+    if(arg1 == QString::fromLocal8Bit("单人间"))
     {
         ui->letprice->setText("120");
     }
-    else if(arg1 == "双人间")
+    else if(arg1 == QString::fromLocal8Bit("双人间"))
     {
         ui->letprice->setText("200");
     }
-    else if(arg1 == "豪华套间")
+    else if(arg1 ==QString::fromLocal8Bit ("豪华套间"))
     {
         ui->letprice->setText("500");
     }
-    else if(arg1 == "总统套间")
+    else if(arg1 == QString::fromLocal8Bit("总统套间"))
     {
         ui->letprice->setText("1000");
     }
@@ -362,7 +364,7 @@ void CustomerWindget::on_pbuModifyOk_clicked()
     if(customeName.isEmpty() ||customePhone.isEmpty()
             ||customePwd.isEmpty()||customeAddress.isEmpty())
     {
-        myHelper::ShowMessageBoxError(tr("必须填满带*字段"));
+        myHelper::ShowMessageBoxError(QString::fromLocal8Bit("必须填满带*字段"));
     }
     else
     {
@@ -374,8 +376,8 @@ void CustomerWindget::on_pbuModifyOk_clicked()
                 +"', CustomerRemark ='"+customeRemark+"' where Id = '"+currentUseName+"';";
         qDebug() <<sql;
         query.exec(sql);
-        myHelper::ShowMessageBoxInfo(tr("修改成功"));
-        myHelper::MyLoginBlog("logblog","修改信息","客户",currentUseName);
+        myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("修改成功"));
+        myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("修改信息"),QString::fromLocal8Bit("客户"),currentUseName);
         qDebug() <<"update customer info success!";
     }
 }

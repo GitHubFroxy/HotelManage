@@ -84,7 +84,7 @@ void ProManage::BindHotelInfo(QString tableName, QTableView *tableView, QString 
 {
     TableView = tableView;
     QString sql = "SELECT RoomNo,Typename,TypePrice,RoomState,RoomRemark FROM " + tableName+
-            ",RoomType where room.RoomTypeId=roomtype.RoomTypeId;";
+            ",RoomType where Room.RoomTypeId=RoomType.RoomTypeId;";
 
     QueryModel->setQuery(sql);
     TableView->setModel(QueryModel);

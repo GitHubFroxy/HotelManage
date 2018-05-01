@@ -68,7 +68,7 @@ void CheckCutomDialog::on_pbnCheckOk_clicked()
             || roomDate.isEmpty() || roomCustomName.isEmpty()
             || roomCustomIdcard.isEmpty() || roomCustomCash.isEmpty())
     {
-        myHelper::ShowMessageBoxInfo(tr("必须填满带*字段"));
+        myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("必须填满带*字段"));
     }
     else
     {
@@ -92,11 +92,11 @@ void CheckCutomDialog::on_pbnCheckOk_clicked()
 
         if(ok)
         {
-            myHelper::ShowMessageBoxInfo(tr("注册成功!"));
+            myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("注册成功!"));
 
-            this->UpdateRoomeTableInfo("Room","满",roomId);
+            this->UpdateRoomeTableInfo(QString::fromLocal8Bit("Room"),QString::fromLocal8Bit("满"),roomId);
 
-            myHelper::MyLoginBlog("logblog","来客登记","新客人入住","管理员");
+            myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("来客登记"),QString::fromLocal8Bit("新客人入住"),QString::fromLocal8Bit("管理员"));
         }
     }
 }

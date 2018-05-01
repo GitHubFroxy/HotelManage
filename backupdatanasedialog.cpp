@@ -36,8 +36,8 @@ BackupDatanaseDialog::~BackupDatanaseDialog()
 
 void BackupDatanaseDialog::InitForm()
 {
-    ui->labelBackInfo->setText(tr(" "));//初始化备份提示信息
-    ui->pbnOk->setToolTip(tr("确认备份"));
+    ui->labelBackInfo->setText(QString::fromLocal8Bit(" "));//初始化备份提示信息
+    ui->pbnOk->setToolTip(QString::fromLocal8Bit("确认备份"));
 
     ui->progressBar->setRange(0,5000 - 1);
     ui->progressBar->setValue(0);
@@ -57,19 +57,19 @@ void BackupDatanaseDialog::on_pbnOk_clicked()
 
     for(int i = 0;i<5000;i++)
     {
-        ui->labelBackInfo->setText(tr("正在备份……"));
+        ui->labelBackInfo->setText(QString::fromLocal8Bit("正在备份……"));
         for(int j = 0;j<2000;j++)
         {
             ui->progressBar->setValue(i);
         }
-        ui->labelBackInfo->setText(tr("备份完成"));
+        ui->labelBackInfo->setText(QString::fromLocal8Bit("备份完成"));
 
-        ui->pbnOk->setToolTip(tr("已经备份完成"));
+        ui->pbnOk->setToolTip(QString::fromLocal8Bit("已经备份完成"));
     }
 
     QString currentname = Myapp::CurrentUserName;
-    qDebug() <<"备份数据库:"<<currentname;
-    myHelper::MyLoginBlog("logblog","备份数据库","备份全部数据",currentname);
+    qDebug() <<QString::fromLocal8Bit("备份数据库:")<<currentname;
+    myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("备份数据库"),QString::fromLocal8Bit("备份全部数据"),currentname);
 
 }
 
@@ -80,7 +80,7 @@ void BackupDatanaseDialog::on_pbnSearch_clicked()
 {
     QString defaultname = "back_hotel.sql";
     //选择路径
-    QString filename = QFileDialog::getSaveFileName(this,tr("保存数据库"),"",
+    QString filename = QFileDialog::getSaveFileName(this,QString::fromLocal8Bit("保存数据库"),"",
                                                     tr("*sql;; *txt;;"));
     if(filename.isEmpty())
     {
@@ -93,5 +93,5 @@ void BackupDatanaseDialog::on_pbnSearch_clicked()
 void BackupDatanaseDialog::on_lineEdit_textChanged(const QString &arg1)
 {
     ui->progressBar->setValue(0);
-    ui->pbnOk->setToolTip(tr(""));
+    ui->pbnOk->setToolTip(QString::fromLocal8Bit(""));
 }

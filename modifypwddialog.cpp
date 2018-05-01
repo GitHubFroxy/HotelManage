@@ -63,13 +63,13 @@ void ModifyPwdDialog::on_pbnModifyPwd_clicked()
 
     if(OldPwd.isEmpty() ||NewPwd.isEmpty()||ReNewPwd.isEmpty())
     {
-        myHelper::ShowMessageBoxInfo(tr("密码不能为空!"));
+        myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("密码不能为空!"));
     }
     else
     {
         if(NewPwd != ReNewPwd)
         {
-            myHelper::ShowMessageBoxInfo(tr("两次密码不一致!请重新输入"));
+            myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("两次密码不一致!请重新输入"));
             ui->lineEditReNewPwd->setFocus();
         }
         else if(UserOldPwd == OldPwd)
@@ -79,13 +79,13 @@ void ModifyPwdDialog::on_pbnModifyPwd_clicked()
             qDebug() <<sql;
             query.exec(sql);
             qDebug() <<"update ok!";
-            myHelper::ShowMessageBoxInfo(tr("修改密码成功!"));
+            myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("修改密码成功!"));
 
-            myHelper::MyLoginBlog("logblog","修改密码","修改管理员的密码","管理员");
+            myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("修改密码"),QString::fromLocal8Bit("修改管理员的密码"),QString::fromLocal8Bit("管理员"));
         }
         else
         {
-            myHelper::ShowMessageBoxError(tr("旧密码错误，请重新输入"));
+            myHelper::ShowMessageBoxError(QString::fromLocal8Bit("旧密码错误，请重新输入"));
 
             ui->lineEditNewPwd->clear();
             ui->lineEditReNewPwd->clear();
