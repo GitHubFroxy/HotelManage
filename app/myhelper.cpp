@@ -176,7 +176,8 @@ void myHelper::SetSystemDateTime(int year, int month, int day, int hour, int min
 void myHelper::MyLoginBlog(QString tablename, QString Trigger, QString BlogContent, QString UserName)
 {
     QSqlQuery query;
-    QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+ //   QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+    QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");//修改以适应SQLITE数据库
     qDebug() <<currentDateTime;
 
     QString sql = "insert into "+tablename+" values(:TriggerTimer,:Trigger,:TriggerContent,:TriggerUser)";

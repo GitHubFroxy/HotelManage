@@ -144,7 +144,7 @@ void ModiftRoomPrice::on_pbnSave_clicked()
         {
             myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("保存客房信息成功!"));
             QString todo;
-            todo = "+";
+            todo = roomtypeName;
             todo += QString::fromLocal8Bit("房间价格改为");
             todo += roomtypePrice;
             myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("修改房间价格"),todo,QString::fromLocal8Bit("管理员"));
