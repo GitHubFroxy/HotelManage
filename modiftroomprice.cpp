@@ -111,20 +111,43 @@ void ModiftRoomPrice::on_pbnSave_clicked()
     }
     else
     {
+
+
+        QSqlQueryModel userMode(ui->tableView);
+        QString sql = "SELECT *FROM roomtype;";
+        qDebug() <<sql;
+        userMode.setQuery(QString(sql));
+        int Row = ui->tableView->currentIndex().row();
+        QSqlRecord record = userMode.record(Row);
+        QString roomtypeNo_modi = record.value(0).toString();
+
         QSqlQuery query;
-        bool ok = query.prepare("INSERT INTO roomtype (RoomTypeId, Typename,TypePrice)"
-                                "VALUES (:RoomTypeId,:Typename,:TypePrice)");
-        query.bindValue(":RoomTypeId",roomtypeNo);
-        query.bindValue(":Typename",roomtypeName);
-        query.bindValue(":TypePrice",roomtypePrice);
-        query.setForwardOnly(true);
-        query.exec();
+        sql ="UPDATE RoomType SET Typename ='"+roomtypeName
+                +"', TypePrice ='"+roomtypePrice+"' where RoomTypeId = '"+roomtypeNo_modi+"';";
+        qDebug() <<sql;
+        query.exec(sql);
 
-        if(ok)
+        sql = "SELECT *FROM roomtype;";
+        QueryModel->setQuery(sql);
+
+        //添加的部分代码
+//        QSqlQuery query;
+//        bool ok = query.prepare("INSERT INTO roomtype (RoomTypeId, Typename,TypePrice)"
+//                                "VALUES (:RoomTypeId,:Typename,:TypePrice)");
+//        query.bindValue(":RoomTypeId",roomtypeNo);
+//        query.bindValue(":Typename",roomtypeName);
+//        query.bindValue(":TypePrice",roomtypePrice);
+//        query.setForwardOnly(true);
+//        query.exec();
+
+        //if(ok)
         {
-            myHelper::ShowMessageBoxInfo(tr("保存客房信息成功!"));
-
-            myHelper::MyLoginBlog("logblog","修改房间价格",+"房间价格改为"+roomtypePrice,"管理员");
+            myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("保存客房信息成功!"));
+            QString todo;
+            todo = "+";
+            todo += QString::fromLocal8Bit("房间价格改为");
+            todo += roomtypePrice;
+            myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("修改房间价格"),todo,QString::fromLocal8Bit("管理员"));
         }
     }
 }
