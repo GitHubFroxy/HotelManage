@@ -353,6 +353,7 @@ void CustomerWindget::on_pbnmodify_clicked()
 */
 void CustomerWindget::on_pbuModifyOk_clicked()
 {
+    QString Id;
     QString customeName = ui->letusename->text();
     QString customeSex = ui->letsex->text();
     QString customePwd = ui->letpossword->text();
@@ -368,14 +369,22 @@ void CustomerWindget::on_pbuModifyOk_clicked()
     }
     else
     {
+        Id = getCustomId();
         QString currentUseName = Myapp::CurrentUserName;    //获取当前登录名
         QSqlQuery query;
-        QString sql ="update Customer set CustomerSex ='"+customeSex
+        QString sql ="UPDATE customer SET CustomerSex ='"+customeSex
+                +"',CustomerName ='"+customeName
                 +"', CustomerPassword='"+customePwd+"',CustomerPhone='"+customePhone
-                +"', CustomerData ='"+customedate+"', CustomerAddress='"+customeAddress
-                +"', CustomerRemark ='"+customeRemark+"' where Id = '"+currentUseName+"';";
+                +"', CustomerDate ='"+customedate+"', CustomerAddress='"+customeAddress
+                +"', CustomerRemark ='"+customeRemark+"' where Id = '"+Id+"';";
         qDebug() <<sql;
         query.exec(sql);
+
+        //更新列表内容
+        sql = "SELECT * FROM customer where CustomerName ='"+currentUseName+"';";
+        qDebug() <<sql;
+        QueryModel->setQuery(sql);
+
         myHelper::ShowMessageBoxInfo(QString::fromLocal8Bit("修改成功"));
         myHelper::MyLoginBlog("logblog",QString::fromLocal8Bit("修改信息"),QString::fromLocal8Bit("客户"),currentUseName);
         qDebug() <<"update customer info success!";
@@ -397,7 +406,8 @@ void CustomerWindget::on_pbnCancle_clicked()
 void CustomerWindget::showCustomInfo()
 {
     QSqlQueryModel userMode(ui->tableViewCustomeInfo);
-    QString sql = "SELECT *FROM customer;";
+    QString currentUseName = Myapp::CurrentUserName;    //获取当前登录名
+    QString sql = "SELECT *FROM customer where CustomerName ='"+currentUseName+"';";
     qDebug() <<sql;
     userMode.setQuery(QString(sql));
     int Row = ui->tableViewCustomeInfo->currentIndex().row();
@@ -410,4 +420,16 @@ void CustomerWindget::showCustomInfo()
     ui->letaddress->setText(record.value(5).toString());
     //ui->dateCustomeIn->setDate(QDate::addDays(record.value(6).toInt()));
     ui->letGnote->setText(record.value(7).toString());
+}
+QString CustomerWindget::getCustomId()
+{
+    QSqlQueryModel userMode(ui->tableViewCustomeInfo);
+    QString currentUseName = Myapp::CurrentUserName;    //获取当前登录名
+    QString sql = "SELECT *FROM customer where CustomerName ='"+currentUseName+"';";
+    qDebug() <<sql;
+    userMode.setQuery(QString(sql));
+    int Row = ui->tableViewCustomeInfo->currentIndex().row();
+    QSqlRecord record = userMode.record(Row);
+
+    return record.value(0).toString();
 }

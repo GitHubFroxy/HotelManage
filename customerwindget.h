@@ -84,6 +84,7 @@ private:
     int CustomeColumnWidths[8];            //列宽数组声明
 
     RoomPicDialog *roompicture;             //房间信息查看界面
+    QString getCustomId();
 };
 
 #endif // CUSTOMERWINDGET_H
